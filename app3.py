@@ -9,7 +9,7 @@ import pandas as pd
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 # Gemini API Setup
-genai.configure(api_key="AIzaSyDMgl_T8NEN0nq7XbGZWE4w7fNf07d84ZE")
+genai.configure(api_key=st.secrets["apikey"])
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Sidebar
