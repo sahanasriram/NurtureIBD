@@ -70,7 +70,7 @@ if page == "Patient Entry & Upload":
     # File Upload
     st.markdown("---")
     st.subheader(":page_facing_up: Upload Blood Report Here")
-    uploaded_file = st.file_uploader("Choose a file", type=['pdf', 'png', 'jpg', 'jpeg'])
+    uploaded_file = st.file_uploader("Choose a file", type=['pdf'])
 
     if uploaded_file is not None:
         file_type = uploaded_file.type
