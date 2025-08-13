@@ -150,9 +150,11 @@ Patient Info:
 Details:
 - Diet Plan: Based on diseases, allergies, goals, create a diet plan that will benefit the patient and allow them to be pain free. Use data from blood report to factor into plan. Give
 tham actual products and meals that they can have for breakfast, lunch, and dinner. Plan out their meals for the next week, give options for meal prepped meals and freshly made meals. 
-- Medication Schedule: suggest medications based on patient medical data and create a schedule based on when they are supposed to take medication
+give them ingredients they can purchase in stores based on the location inputted. Work around the medication schedule if there.
+- Medication Schedule: suggest medications based on patient medical data and create a schedule based on when they are supposed to take medication. Suggest any vitamins
+they may need.
 - Blood Analysis Report: If any lab data is included, interpret simply. Input information from the blood analysis report to create a more cohesive diet plan
-Avoid making a diagnosis or using overly technical terms.
+Avoid making a diagnosis or using overly technical terms. Factor the blood analysis report into the diet plan and medication schedule.
 """
 
     # Generate AI response if not already present
