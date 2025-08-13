@@ -24,6 +24,7 @@ if 'patient_history' not in st.session_state:
         "Gender": "",
         "Height": "",
         "Weight": "",
+        "Location": "",
         "Tobacco use": "",
         "Family History": "",
         "Current or past disease": [],
@@ -46,6 +47,7 @@ if page == "Patient Entry & Upload":
     st.session_state.patient_history["Gender"] = st.selectbox(":restroom: Gender", ["Male", "Female", "Other"], index=["Male", "Female", "Other"].index(st.session_state.patient_history["Gender"]) if st.session_state.patient_history["Gender"] in ["Male", "Female", "Other"] else 0)
     st.session_state.patient_history["Height"] = st.text_input("Height (feet & inches): ", st.session_state.patient_history["Height"])
     st.session_state.patient_history["Weight"] = st.text_input("Weight (pounds): ", st.session_state.patient_history["Weight"])
+    st.session_state.patient_history["Location"] = st.text_input("Location (for ingredient purchase purposes): ", st.session_state.patient_history["Location"])
     st.session_state.patient_history["Tobacco use"] = st.selectbox("Do you use tobacco?", ["Yes", "No", "I have before but quit"], index=["Yes", "No", "I have before but quit"].index(st.session_state.patient_history["Tobacco use"]) if st.session_state.patient_history["Tobacco use"] in ["Yes", "No", "I have before but quit"] else 0)
     st.session_state.patient_history["Family History"] = st.text_input("Enter any family diseases or diagnosis history here: ", st.session_state.patient_history["Family History"])
     st.session_state.patient_history["Current or past disease"] = st.multiselect("Select any of the diseases you may have",
