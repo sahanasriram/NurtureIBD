@@ -14,7 +14,36 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Sidebar
 st.sidebar.title("📋 Menu")
-page = st.sidebar.selectbox("Go to", ["Patient Entry & Upload", "AI Analysis"])
+page = st.sidebar.selectbox("Go to", ["Home","Patient Entry & Upload", "AI Analysis"])
+# Homepage
+if page=="Home":
+    st.title("🏥 Welcome to the Patient Care App")
+
+    st.subheader("ℹ️ About this App")
+    st.write("""
+   
+    This app is built using Streamlit.
+    Nurture IBD is a health platform built to bridge the gap between medical visits and daily life for people managing chronic illnesses such as Inflammatory Bowel Disease, 
+    celiac disease, diabetes, and kidney disease. Many patients struggle to make sense of complex medical data and apply it to their everyday choices — that’s where we step in.
+    Our app makes it simple to track symptoms, upload lab reports, and store detailed health history. Using AI, Nurture IBD interprets this data to provide personalized diet guidance, 
+    medicine reminders, and care suggestions tailored to each individual. With an easy-to-use design, we empower patients to take control of their health, improve communication with their doctors, 
+    and make informed decisions that enhance their quality of life.
+    This application helps patients and doctors by:
+    - Collecting important patient information
+    - Uploading and analyzing blood reports
+    - Generating personalized **Diet Plans**
+    - Suggesting **Medication & Supplement Schedules**
+    - Interpreting **Blood Analysis Reports** in a simple way
+    """)
+
+    st.subheader("📖 How to Use")
+    st.write("""
+    1. Go to **Patient Entry & Upload** to enter your details and upload reports.  
+    2. Then switch to **AI Analysis** to view diet, medication, and report analysis.  
+    3. You can always return here to re-read the instructions.
+    """)
+
+    st.info("💡 Tip: Upload your most recent blood test for the best recommendations.")
 
 # Initialize patient history and report text
 if 'patient_history' not in st.session_state:
