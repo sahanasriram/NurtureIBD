@@ -149,6 +149,53 @@ if page == "Patient Entry & Upload":
     st.markdown("---")
     st.caption("Built with :heart: using Streamlit")
 
+if page == "AI Chat":
+    st.title("💬 AI Chat Assistant")
+    
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    if prompt := st.chat_input("Type your message here..."):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        with st.chat_message("assistant"):
+            # Create context with patient info
+            patient_context = "\n".join(
+                f"{key}: {value}" for key, value in st.session_state.patient_history.items() if value)
+            full_context = patient_context + st.session_state.uploaded_text
+            
+            # Create chat prompt with context
+            chat_prompt = f"""
+            You are a medical assistant. Here is the patient information:
+            {full_context}
+            
+            Previous conversation:
+            {[msg['content'] for msg in st.session_state.messages[:-1]]}
+            
+            User question: {prompt}
+            
+            Please provide a helpful response based on the patient's information.
+            Stay friendly and match the tone of the user. Make sure to reference the patient's details where relevant.
+            Make sure to format your response in markdown for better readability. Make sure to keep the topic on track.
+            Avoid making a diagnosis or using overly technical terms. Respond as a knowledgeable but approachable assistant.
+            Provide concise and clear answers, breaking down complex information into simple terms.
+            """
+            
+            with st.spinner("Thinking..."):
+                try:
+                    response = model.generate_content(chat_prompt)
+                    ai_response = response.text
+                    st.markdown(ai_response)
+                    st.session_state.messages.append({"role": "assistant", "content": ai_response})
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
 # ------------------ PAGE 2 ------------------
 elif page == "AI Analysis":
     st.title("🧠 AI Analysis Assistant")
@@ -229,4 +276,6 @@ Avoid making a diagnosis or using overly technical terms. Factor the blood analy
     elif ai_section == "Blood Analysis Report":
         st.subheader("🧪 Blood Work Interpretation")
         st.markdown(section_map.get("Blood Analysis Report", "_No blood report data available._"))
+
+
 
