@@ -5,6 +5,29 @@ from PIL import Image
 import google.generativeai as genai
 import pandas as pd
 
+# Authenticator Code for session and logout START
+from auth_config import authenticator
+
+
+# st.set_page_config(page_title="Chronical Dashboard", initial_sidebar_state="collapsed")
+import streamlit as st
+
+for key in ['authentication_status', 'username', 'name']:
+    if key not in st.session_state:
+        st.session_state[key] = None
+
+if st.session_state.get("authentication_status"):
+    # Show your page content
+    st.write(f"Welcome, {st.session_state['name']}!")
+    authenticator.logout("Logout", "main")
+else:
+    st.warning("Please log in to access this page." , )
+    if st.button("Go to Login →"):
+        st.switch_page("./AppLogin.py")
+    st.stop()
+
+# Authenticator Code for session and logout END
+
 # Setup Tesseract OCR
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
