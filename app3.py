@@ -14,7 +14,7 @@ model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Sidebar
 st.sidebar.title("📋 Menu")
-page = st.sidebar.selectbox("Go to", ["Home","Patient Entry & Upload", "AI Analysis"])
+page = st.sidebar.selectbox("Go to", ["Home","Patient Entry & Upload", "AI Analysis", "AI Chat"])
 # Homepage
 if page=="Home":
     st.title("🏥 Welcome to the Patient Care App")
