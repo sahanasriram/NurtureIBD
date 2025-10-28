@@ -5,17 +5,14 @@ from PIL import Image
 import google.generativeai as genai
 import pandas as pd
 
-# Setup Tesseract OCR
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
-# Gemini API Setup
 genai.configure(api_key=st.secrets["apikey"])
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-# Sidebar
 st.sidebar.title("📋 Menu")
 page = st.sidebar.selectbox("Go to", ["Home","Patient Entry & Upload", "AI Analysis", "AI Chat"])
-# Homepage
+
 if page=="Home":
     st.title("🏥 Welcome to the Patient Care App")
 
@@ -45,7 +42,6 @@ if page=="Home":
 
     st.info("💡 Tip: Upload your most recent blood test for the best recommendations.")
 
-# Initialize patient history and report text
 if 'patient_history' not in st.session_state:
     st.session_state.patient_history = {
         "Name": "",
@@ -70,7 +66,6 @@ if 'uploaded_text' not in st.session_state:
 if page == "Patient Entry & Upload":
     st.title(":hospital: Patient Entry & Document Upload")
 
-    # Patient form inputs
     st.session_state.patient_history["Name"] = st.text_input(":bust_in_silhouette: Name", st.session_state.patient_history["Name"])
     st.session_state.patient_history["Age"] = st.number_input(":birthday: Age", min_value=2, max_value=100, value=st.session_state.patient_history["Age"])
     st.session_state.patient_history["Gender"] = st.selectbox(":restroom: Gender", ["Male", "Female", "Other"], index=["Male", "Female", "Other"].index(st.session_state.patient_history["Gender"]) if st.session_state.patient_history["Gender"] in ["Male", "Female", "Other"] else 0)
@@ -93,12 +88,10 @@ if page == "Patient Entry & Upload":
     st.session_state.patient_history["Current Medication"] = st.text_input("What medications are you currently taking: ", st.session_state.patient_history["Current Medication"])
     st.session_state.patient_history["Other Information"] = st.text_input("Please enter any other relevant information here: ", st.session_state.patient_history["Other Information"])
 
-    # View collected data
     with st.expander("🔍 View Submitted Patient Info"):
         for key, value in st.session_state.patient_history.items():
             st.markdown(f"**{key}:** {value if value else '—'}")
 
-    # File Upload
     st.markdown("---")
     st.subheader(":page_facing_up: Upload Blood Report Here")
     uploaded_file = st.file_uploader("Choose a file", type=['pdf'])
@@ -196,7 +189,6 @@ if page == "AI Chat":
                 except Exception as e:
                     st.error(f"Error: {e}")
 
-# ------------------ PAGE 2 ------------------
 elif page == "AI Analysis":
     st.title("🧠 AI Analysis Assistant")
     ai_section = st.sidebar.radio("AI Analysis Sections", ["Diet Plan", "Medicine Schedule", "Blood Analysis Report"])
@@ -206,7 +198,6 @@ elif page == "AI Analysis":
         for key, value in st.session_state.patient_history.items():
             st.markdown(f"**{key}:** {value if value else '—'}")
 
-    # Generate prompt
     patient_context = "\n".join(
         f"{key}: {value}" for key, value in st.session_state.patient_history.items() if value)
 
@@ -232,8 +223,7 @@ they may need.
 - Blood Analysis Report: If any lab data is included, interpret simply. Input information from the blood analysis report to create a more cohesive diet plan
 Avoid making a diagnosis or using overly technical terms. Factor the blood analysis report into the diet plan and medication schedule.
 """
-
-    # Generate AI response if not already present
+    
     if 'ai_response' not in st.session_state:
         with st.spinner("Analyzing patient info..."):
             try:
@@ -244,12 +234,10 @@ Avoid making a diagnosis or using overly technical terms. Factor the blood analy
                 st.error(f"Gemini API Error: {e}")
                 st.stop()
 
-    # Optional: regenerate
     if st.button("🔁 Regenerate AI Analysis"):
         st.session_state.pop('ai_response', None)
         st.rerun()
 
-    # Split and map AI response by headers
     sections = st.session_state.ai_response.split("## ")
     section_map = {}
     for section in sections:
@@ -259,12 +247,10 @@ Avoid making a diagnosis or using overly technical terms. Factor the blood analy
                 title, content = lines[0].strip(), lines[1].strip()
                 section_map[title] = content
 
-    # Show fallback if parsing failed
     if not section_map:
         st.warning("⚠️ Could not parse AI response properly. Showing raw output:")
         st.text(st.session_state.ai_response)
 
-    # Show selected section
     if ai_section == "Diet Plan":
         st.subheader("🥗 Personalized Diet Plan")
         st.markdown(section_map.get("Diet Plan", "_No diet plan available._"))
